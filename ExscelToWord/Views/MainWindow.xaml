@@ -1,0 +1,58 @@
+﻿<Window x:Class="ExscelToWord.Views.MainWindow"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+     xmlns:local="clr-namespace:ExscelToWord.Views"
+     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     xmlns:viewModels="clr-namespace:ExscelToWord.ViewModels"
+     Title="MainWindow"
+     Width="800"
+     Height="450"
+     mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModels:ExcelConvertViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"  MaxHeight="400"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <TextBox Margin="5" MinWidth="80" MaxWidth="200" Text="{Binding ExcelFilePath}" TextWrapping="Wrap" />
+            <Button MinHeight="30" Margin="5" Command="{Binding LoadExcelCommand}" Content="Load excel file" />
+        </StackPanel>
+        <StackPanel Grid.Row="0"  Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Margin="5"  Text="Select sheet"/>
+            <ComboBox Margin="5"  TabIndex="1" MaxWidth="150" ItemsSource="{Binding ExcelSheets}" SelectedItem="{Binding ExcelSheet}" />
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            <Button Margin="5"  Content="Load excel columns" Command="{Binding LoadExcelColumnsCommand}"/>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <TextBlock Margin="5"  Text="Select Word file"/>
+                    <Button Margin="5"  MinHeight="30" Command="{Binding LoadWordCommand}" Content="Load filename" />
+                </StackPanel>
+                <TextBox MinWidth="100" Margin="10,20"  Text="{Binding WordFileName}"/>
+            </StackPanel>
+            <Button Content="Add table to word file" Command="{Binding FillWordCommand}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" MaxHeight="400">
+            <ScrollViewer  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto">
+                <ListBox  ItemsSource="{Binding ListOfFields}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </StackPanel>
+    </Grid>
+</Window>
